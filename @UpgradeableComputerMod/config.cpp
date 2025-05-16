@@ -2,7 +2,7 @@ class CfgPatches
 {
     class UpgradeableComputerMod
     {
-        units[] = {"Upgradeable_ComputerBase", "CircuitBoard_T1", "CircuitBoard_T2", "CircuitBoard_T3", "CircuitBoard_T4"};
+        units[] = {"Upgradeable_ComputerBase", "CircuitBoard_UpgradeEntity"};
         weapons[] = {};
         requiredVersion = 0.1;
         requiredAddons[] = {"DZ_Data"};
@@ -11,69 +11,93 @@ class CfgPatches
 
 class CfgVehicles
 {
-    class HouseNoDestruct; // base class for placeable tents/buildings
-    class Inventory_Base; // base for inventory items
+    class HouseNoDestruct;
 
-    // Placeable computer, inherits from HouseNoDestruct so it can be placed in the world
-    class Upgradeable_ComputerBase: HouseNoDestruct
+    // The placeable computer base entity
+    class Upgradeable_ComputerBase : HouseNoDestruct
     {
         scope = 2;
         displayName = "Upgradeable Computer";
         descriptionShort = "A placeable computer that can be upgraded with circuit boards to increase storage.";
-        model = "@UpgradeableComputerMod\models\computer.p3d";
-        canBePlaced = 1;
-        rotationFlags = 17; // allows rotation while placing
+        model = "\@UpgradeableComputerMod\models\computer.p3d";
         vehicleClass = "Fortifications";
-        
-        cargoSize[] = {20, 5}; // base cargo size (width x height)
-        hiddenSelections[] = {}; // add if needed for texture variations
-        attachments[] = {}; // no attachments by default
-        
-        // Optional sound parameters to avoid silent placement
-        soundBuilding = "houseBuilding_SoundSet";
-        noiseRadius = 15;
+        canBePlaced = 1;
+        rotationFlags = 17; // allows free rotation when placing
 
-        // Other optional settings can be added here
+        inventorySize[] = {20,5}; // base cargo size
+
+        cargoCanBeSplit = 0;
+
+        attachments[] = {
+            "UpgradeSlot1",
+            "UpgradeSlot2",
+            "UpgradeSlot3",
+            "UpgradeSlot4",
+            "UpgradeSlot5",
+            "UpgradeSlot6",
+            "UpgradeSlot7",
+            "UpgradeSlot8"
+        };
+
+        // Optional: prevent the computer from being destroyed to keep upgrades safe
+        destructible = 0;
     };
 
-    // Base circuit board item class
-    class CircuitBoard_Base: Inventory_Base
+    // Upgrade module entity attached to the computer
+    class CircuitBoard_UpgradeEntity : HouseNoDestruct
     {
-        scope = 0;
+        scope = 1; // hidden from spawn menu (only created by scripts)
+        displayName = "Computer Upgrade Module";
+        descriptionShort = "An upgrade module for the computer.";
+        model = "\@UpgradeableComputerMod\models\circuitboard_upgrade.p3d"; // make sure this file exists!
+        vehicleClass = "Fortifications";
+
+        canBePlaced = 0; // not placeable by players manually
+
+        inventorySize[] = {10,5}; // storage added by this upgrade (example size)
+
+        cargoCanBeSplit = 0;
+
+        // no attachments needed here
+        attachments[] = {};
+    };
+
+    // Circuit board items that player holds in inventory (not placeable)
+    class Inventory_Base;
+
+    class CircuitBoard_Base : Inventory_Base
+    {
+        scope = 0; // base class, no spawn in inventory
         displayName = "Circuit Board";
         descriptionShort = "An upgrade circuit board.";
-        model = "@UpgradeableComputerMod\models\circuitboard.p3d";
-        itemSize[] = {1, 1};
+        model = "\@UpgradeableComputerMod\models\circuitboard.p3d";
+        itemSize[] = {1,1};
         weight = 50;
         canBeDropped = 1;
     };
 
-    // Circuit board tier 1
-    class CircuitBoard_T1: CircuitBoard_Base
+    class CircuitBoard_T1 : CircuitBoard_Base
     {
         scope = 2;
         displayName = "Circuit Board Tier 1";
         descriptionShort = "Adds 250 slots when used on the computer.";
     };
 
-    // Circuit board tier 2
-    class CircuitBoard_T2: CircuitBoard_Base
+    class CircuitBoard_T2 : CircuitBoard_Base
     {
         scope = 2;
         displayName = "Circuit Board Tier 2";
         descriptionShort = "Adds 500 slots when used on the computer.";
     };
 
-    // Circuit board tier 3
-    class CircuitBoard_T3: CircuitBoard_Base
+    class CircuitBoard_T3 : CircuitBoard_Base
     {
         scope = 2;
         displayName = "Circuit Board Tier 3";
         descriptionShort = "Adds 750 slots when used on the computer.";
     };
 
-    // Circuit board tier 4
-    class CircuitBoard_T4: CircuitBoard_Base
+    class CircuitBoard_T4 : CircuitBoard_Base
     {
         scope = 2;
         displayName = "Circuit Board Tier 4";
