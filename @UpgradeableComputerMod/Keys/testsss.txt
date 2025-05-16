@@ -1,0 +1,10 @@
+Authority:  testsss
+Creation:   5/16/2025 3:25:26 AM (by STONEEY\tatte)
+
+== PRIVATE KEY ==
+File: C:\Users\tatte\OneDrive\Desktop\server\@MyHQUpgradesMod\Keys\testsss.biprivatekey
+MD5: 7c1388c6ab7bfde9f09204d288e0153d
+== PUBLIC KEY ==
+File: C:\Users\tatte\OneDrive\Desktop\server\@MyHQUpgradesMod\Keys\testsss.bikey
+MD5: d63300238a1e38877546703374a05aff
+
